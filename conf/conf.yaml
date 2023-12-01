@@ -16,8 +16,8 @@ smtp_host:
 session_secret: wblog
 domain:
 public: static
-addr: :8090
-#addr: :81
+#addr: :8090
+addr: :81
 
 backup_key:
 dsn: wblog.db?_loc=Asia/Shanghai

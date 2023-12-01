@@ -47,7 +47,12 @@ func TagGet(c *gin.Context) {
 	if pageIndex <= 0 {
 		pageIndex = 1
 	}
-	posts, err = models.ListPublishedPost(tagName, pageIndex, pageSize)
+	user, _ := c.Get(CONTEXT_USER_KEY)
+	isLogin := false
+	if nil != user {
+		isLogin = true
+	}
+	posts, err = models.ListPublishedPost(tagName, pageIndex, pageSize, isLogin)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

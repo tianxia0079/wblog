@@ -23,7 +23,12 @@ func RssGet(c *gin.Context) {
 	}
 
 	feed.Items = make([]*feeds.Item, 0)
-	posts, err := models.ListPublishedPost("", 0, 0)
+	user, _ := c.Get(CONTEXT_USER_KEY)
+	isLogin := false
+	if nil != user {
+		isLogin = true
+	}
+	posts, err := models.ListPublishedPost("", 0, 0, isLogin)
 	if err != nil {
 		seelog.Error(err)
 		return

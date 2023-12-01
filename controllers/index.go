@@ -23,6 +23,11 @@ func IndexGet(c *gin.Context) {
 		posts     []*models.Post
 		policy    *bluemonday.Policy
 	)
+	user, _ := c.Get(CONTEXT_USER_KEY)
+	isLogin := false
+	if nil != user {
+		isLogin = true
+	}
 	page = c.Query("page")
 	textSearch := c.Query("textSearch")
 
@@ -30,11 +35,12 @@ func IndexGet(c *gin.Context) {
 	if pageIndex <= 0 {
 		pageIndex = 1
 	}
+
 	if "" == textSearch || len(textSearch) <= 0 {
-		posts, err = models.ListPublishedPost("", pageIndex, pageSize)
+		posts, err = models.ListPublishedPost("", pageIndex, pageSize, isLogin)
 
 	} else {
-		posts, err = models.ListPublishedPostv2("", pageIndex, pageSize, textSearch)
+		posts, err = models.ListPublishedPostv2("", pageIndex, pageSize, isLogin, textSearch)
 	}
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -50,7 +56,6 @@ func IndexGet(c *gin.Context) {
 		post.Tags, _ = models.ListTagByPostId(strconv.FormatUint(uint64(post.ID), 10))
 		post.Body = policy.Sanitize(string(blackfriday.MarkdownCommon([]byte(post.Body))))
 	}
-	user, _ := c.Get(CONTEXT_USER_KEY)
 	c.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           posts,
 		"tags":            models.MustListTag(),

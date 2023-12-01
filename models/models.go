@@ -241,11 +241,13 @@ func (post *Post) Excerpt() template.HTML {
 	return excerpt
 }
 
-func ListPublishedPostv2(tag string, pageIndex, pageSize int, textSearch string) ([]*Post, error) {
-	return _listPost(tag, true, pageIndex, pageSize, textSearch)
+func ListPublishedPostv2(tag string, pageIndex, pageSize int, isLogin bool, textSearch string) ([]*Post, error) {
+	return _listPost(tag, !isLogin, pageIndex, pageSize, textSearch)
+
 }
-func ListPublishedPost(tag string, pageIndex, pageSize int) ([]*Post, error) {
-	return _listPost(tag, true, pageIndex, pageSize, "")
+func ListPublishedPost(tag string, pageIndex, pageSize int, isLogin bool) ([]*Post, error) {
+
+	return _listPost(tag, !isLogin, pageIndex, pageSize, "")
 }
 func ListAllPost(tag string) ([]*Post, error) {
 	return _listPost(tag, false, 0, 0, "")

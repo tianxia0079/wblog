@@ -69,7 +69,7 @@ func CreateXMLSitemap() {
 		Priority:   1,
 	})
 
-	posts, err := models.ListPublishedPost("", 0, 0)
+	posts, err := models.ListPublishedPost("", 0, 0, false)
 	if err == nil {
 		for _, post := range posts {
 			items = append(items, sitemap.Item{
