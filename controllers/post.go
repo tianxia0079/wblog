@@ -28,7 +28,10 @@ func PostGet(c *gin.Context) {
 }
 
 func PostNew(c *gin.Context) {
-	c.HTML(http.StatusOK, "post/new.html", nil)
+	user, _ := c.Get(CONTEXT_USER_KEY)
+	c.HTML(http.StatusOK, "post/new.html", gin.H{
+		"user": user,
+	})
 }
 
 func PostCreate(c *gin.Context) {

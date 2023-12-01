@@ -23,7 +23,10 @@ func PageGet(c *gin.Context) {
 }
 
 func PageNew(c *gin.Context) {
-	c.HTML(http.StatusOK, "page/new.html", nil)
+	user, _ := c.Get(CONTEXT_USER_KEY)
+	c.HTML(http.StatusOK, "page/new.html", gin.H{
+		"user": user,
+	})
 }
 
 func PageCreate(c *gin.Context) {

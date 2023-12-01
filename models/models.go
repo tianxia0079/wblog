@@ -241,15 +241,17 @@ func (post *Post) Excerpt() template.HTML {
 	return excerpt
 }
 
+func ListPublishedPostv2(tag string, pageIndex, pageSize int, textSearch string) ([]*Post, error) {
+	return _listPost(tag, true, pageIndex, pageSize, textSearch)
+}
 func ListPublishedPost(tag string, pageIndex, pageSize int) ([]*Post, error) {
-	return _listPost(tag, true, pageIndex, pageSize)
+	return _listPost(tag, true, pageIndex, pageSize, "")
 }
-
 func ListAllPost(tag string) ([]*Post, error) {
-	return _listPost(tag, false, 0, 0)
+	return _listPost(tag, false, 0, 0, "")
 }
 
-func _listPost(tag string, published bool, pageIndex, pageSize int) ([]*Post, error) {
+func _listPost(tag string, published bool, pageIndex, pageSize int, textSearch string) ([]*Post, error) {
 	var posts []*Post
 	var err error
 	if len(tag) > 0 {
@@ -279,7 +281,11 @@ func _listPost(tag string, published bool, pageIndex, pageSize int) ([]*Post, er
 	} else {
 		if published {
 			if pageIndex > 0 {
-				err = DB.Where("is_published = ?", true).Order("created_at desc").Limit(pageSize).Offset((pageIndex - 1) * pageSize).Find(&posts).Error
+				if len(textSearch) > 0 {
+					err = DB.Debug().Where("is_published = ?", true).Where("title like ? or body like ?", "%"+textSearch+"%", "%"+textSearch+"%").Order("created_at desc").Limit(pageSize).Offset((pageIndex - 1) * pageSize).Find(&posts).Error
+				} else {
+					err = DB.Where("is_published = ?", true).Order("created_at desc").Limit(pageSize).Offset((pageIndex - 1) * pageSize).Find(&posts).Error
+				}
 			} else {
 				err = DB.Where("is_published = ?", true).Order("created_at desc").Find(&posts).Error
 			}

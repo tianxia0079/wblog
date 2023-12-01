@@ -46,8 +46,8 @@
             </h1>-->
 
             <section class="article">
-            <!-- First Blog Post -->
-            {{range $postkey,$postvalue:=.posts}}
+                <!-- First Blog Post -->
+                {{range $postkey,$postvalue:=.posts}}
                 <div class="articleInfo">
                     <span><a class="articleTitle" href="/post/{{$postvalue.ID}}">
                         {{$length := len $postvalue.Title}}
@@ -61,13 +61,13 @@
                         {{dateFormat $postvalue.CreatedAt "06-01-02 15:04"}}
                     </span>
                 </div>
-            <div class="articleBody">
-                {{$length := len $postvalue.Body}}
-                {{if ge $length 100}}
+                <div class="articleBody">
+                    {{$length := len $postvalue.Body}}
+                    {{if ge $length 100}}
                     {{truncate $postvalue.Body 100}}...
-                {{else}}
+                    {{else}}
                     {{$postvalue.Body}}
-                {{end}}
+                    {{end}}
                 </div>
 
                 <!-- article tags -->
@@ -82,9 +82,9 @@
                     </tr>
                 </div><!-- article tags -->
 
-            <hr>
+                <hr>
 
-            {{end}}
+                {{end}}
             </section>
 
             <!-- Pager
@@ -106,12 +106,12 @@
                 {{end}}
                 <li>{{ .pageIndex }}/ {{ .totalPage }}</li>
                 {{if lt .pageIndex .totalPage }}
-                    <li class=""><a href="{{.path}}?page={{add .pageIndex 1}}">下一页</a></li>
+                <li class=""><a href="{{.path}}?page={{add .pageIndex 1}}">下一页</a></li>
                 {{ else}}
-                    <li class="disabled"><a href="#">下一页</a></li>
+                <li class="disabled"><a href="#">下一页</a></li>
                 {{end}}
             </ul>
-             {{end}}
+            {{end}}
 
         </div>
 
@@ -122,9 +122,9 @@
             <div class="well">
                 <h5>文章搜索</h5>
                 <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" id="textSearch" onkeydown="EnterKey()">
                     <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button class="btn btn-default" type="button" onclick="search()">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
@@ -170,7 +170,8 @@
                         <ul class="list-unstyled">
                             {{range $archivekey,$archivevalue:=.archives}}
                             {{if isEven $archivekey}}
-                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
+                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat
+                                $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
                             </li>
                             {{end}}
                             {{end}}
@@ -181,7 +182,8 @@
                         <ul class="list-unstyled">
                             {{range $archivekey,$archivevalue:=.archives}}
                             {{if isOdd $archivekey}}
-                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
+                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat
+                                $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
                             </li>
                             {{end}}
                             {{end}}
@@ -197,9 +199,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="list-unstyled">
-                        {{range $key,$post:=.maxReadPosts}}
+                            {{range $key,$post:=.maxReadPosts}}
                             <li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.View}})</a></li>
-                        {{end}}
+                            {{end}}
                         </ul>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -212,9 +214,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="list-unstyled">
-                        {{range $key,$post:=.maxCommentPosts}}
+                            {{range $key,$post:=.maxCommentPosts}}
                             <li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.CommentTotal}})</a></li>
-                        {{end}}
+                            {{end}}
                         </ul>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -230,7 +232,7 @@
                             {{range .links}}
                             <li><a href="/link/{{.ID}}" target="_blank" title="{{.Url}}">{{.Name}}</a>
                             </li>
-                           {{end}}
+                            {{end}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->
@@ -245,7 +247,7 @@
 
     <hr>
 
-   {{template "footer.html"}}
+    {{template "footer.html"}}
 
 </div>
 <!-- /.container -->
@@ -255,7 +257,20 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function search() {
+        var textSearch = $('#textSearch').val();
+        //alert(textSearch)
 
+        window.location.href = "/index?textSearch=" + textSearch;
+    }
+    function EnterKey(event){
+        event = event || window.event;
+        if (event.keyCode == 13) {
+            search()
+        }
+    }
+</script>
 </body>
 
 </html>

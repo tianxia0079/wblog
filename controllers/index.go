@@ -24,11 +24,18 @@ func IndexGet(c *gin.Context) {
 		policy    *bluemonday.Policy
 	)
 	page = c.Query("page")
+	textSearch := c.Query("textSearch")
+
 	pageIndex, _ = strconv.Atoi(page)
 	if pageIndex <= 0 {
 		pageIndex = 1
 	}
-	posts, err = models.ListPublishedPost("", pageIndex, pageSize)
+	if "" == textSearch || len(textSearch) <= 0 {
+		posts, err = models.ListPublishedPost("", pageIndex, pageSize)
+
+	} else {
+		posts, err = models.ListPublishedPostv2("", pageIndex, pageSize, textSearch)
+	}
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
