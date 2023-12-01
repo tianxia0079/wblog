@@ -1,5 +1,8 @@
 # wblog [![Build Status](https://www.travis-ci.org/wangsongyan/wblog.svg?branch=master)](https://www.travis-ci.org/wangsongyan/wblog)  
-[示例地址](http://blog.wangsy.me/)
+
+打包:
+go  build .\main.go
+然后把：[conf](conf) [static](static) [views](views) 和main.exe放在同一个目录下。
 
 ## 初衷
 作为一名web开发程序员居然没有自己的博客，都不好意思对外宣称自己的开发web的。
