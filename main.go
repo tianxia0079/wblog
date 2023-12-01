@@ -4,6 +4,8 @@ import (
 	"flag"
 	"html/template"
 	"net/http"
+	"os"
+	"strings"
 
 	"path/filepath"
 
@@ -249,13 +251,20 @@ func AuthRequired() gin.HandlerFunc {
 	}
 }
 
-func getCurrentDirectory() string {
+func getCurrentDirectoryv2() string {
 	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	//if err != nil {
 	//	seelog.Critical(err)
 	//}
 	return "D:\\1-dev\\workspace\\wblog"
 	//return strings.Replace(dir, "\\", "/", -1)
+}
+func getCurrentDirectory() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		seelog.Critical(err)
+	}
+	return strings.Replace(dir, "\\", "/", -1)
 }
 
 //func getCurrentDirectory() string {
