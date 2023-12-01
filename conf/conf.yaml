@@ -1,4 +1,4 @@
-signup_enabled: true
+signup_enabled: false
 qiniu_accesskey:
 qiniu_secretkey:
 qiniu_fileserver:

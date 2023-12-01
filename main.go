@@ -55,7 +55,7 @@ func main() {
 
 	//Periodic tasks
 	gocron.Every(1).Day().Do(controllers.CreateXMLSitemap)
-	gocron.Every(7).Days().Do(controllers.Backup)
+	//gocron.Every(7).Days().Do(controllers.Backup)
 	gocron.Start()
 
 	router.Static("/static", filepath.Join(getCurrentDirectory(), "./static"))
@@ -155,8 +155,8 @@ func main() {
 		authorized.POST("/read_all", controllers.CommentReadAll)
 
 		// backup
-		authorized.POST("/backup", controllers.BackupPost)
-		authorized.POST("/restore", controllers.RestorePost)
+		//authorized.POST("/backup", controllers.BackupPost)
+		//authorized.POST("/restore", controllers.RestorePost)
 
 		// mail
 		authorized.POST("/new_mail", controllers.SendMail)
@@ -183,7 +183,7 @@ func setTemplate(engine *gin.Engine) {
 	engine.LoadHTMLGlob(filepath.Join(getCurrentDirectory(), "./views/**/*"))
 }
 
-//setSessions initializes sessions & csrf middlewares
+// setSessions initializes sessions & csrf middlewares
 func setSessions(router *gin.Engine) {
 	config := system.GetConfiguration()
 	//https://github.com/gin-gonic/contrib/tree/master/sessions
@@ -202,7 +202,7 @@ func setSessions(router *gin.Engine) {
 
 //+++++++++++++ middlewares +++++++++++++++++++++++
 
-//SharedData fills in common data, such as user info, etc...
+// SharedData fills in common data, such as user info, etc...
 func SharedData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -219,7 +219,7 @@ func SharedData() gin.HandlerFunc {
 	}
 }
 
-//AuthRequired grants access to authenticated users, requires SharedData middleware
+// AuthRequired grants access to authenticated users, requires SharedData middleware
 func AdminScopeRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if user, _ := c.Get(controllers.CONTEXT_USER_KEY); user != nil {

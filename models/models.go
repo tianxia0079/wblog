@@ -12,7 +12,6 @@ import (
 	//_ "github.com/go-sql-driver/mysql"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
-	"github.com/wangsongyan/wblog/system"
 )
 
 // I don't need soft delete,so I use customized BaseModel instead gorm.Model
@@ -132,8 +131,9 @@ var DB *gorm.DB
 
 func InitDB() (*gorm.DB, error) {
 
-	db, err := gorm.Open("sqlite3", system.GetConfiguration().DSN)
+	//db, err := gorm.Open("sqlite3", system.GetConfiguration().DSN)
 	//db, err := gorm.Open("mysql", "root:mysql@/wblog?charset=utf8&parseTime=True&loc=Asia/Shanghai")
+	db, err := gorm.Open("postgres", "postgresql:dw123456://localhost:5432/postgres?charset=utf8&parseTime=True&loc=Asia/Shanghai")
 	if err == nil {
 		DB = db
 		//db.LogMode(true)
@@ -495,14 +495,12 @@ func (user *User) Update() error {
 	return DB.Save(user).Error
 }
 
-//
 func GetUserByUsername(username string) (*User, error) {
 	var user User
 	err := DB.First(&user, "email = ?", username).Error
 	return &user, err
 }
 
-//
 func (user *User) FirstOrCreate() (*User, error) {
 	err := DB.FirstOrCreate(user, "github_login_id = ?", user.GithubLoginId).Error
 	return user, err
