@@ -8,10 +8,12 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/mattn/go-sqlite3"
-	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq" // <------------ here
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
+	//_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/go-sql-driver/mysql"
+	//_ "gorm.io/driver/postgres"
 )
 
 // I don't need soft delete,so I use customized BaseModel instead gorm.Model
@@ -133,7 +135,9 @@ func InitDB() (*gorm.DB, error) {
 
 	//db, err := gorm.Open("sqlite3", system.GetConfiguration().DSN)
 	//db, err := gorm.Open("mysql", "root:mysql@/wblog?charset=utf8&parseTime=True&loc=Asia/Shanghai")
-	db, err := gorm.Open("postgres", "postgresql:dw123456://localhost:5432/postgres?charset=utf8&parseTime=True&loc=Asia/Shanghai")
+	//db, err := gorm.Open("", "postgresql:dw123456://localhost:5432/postgres?charset=utf8&parseTime=True&loc=Asia/Shanghai")
+	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres password=dw123456 dbname=postgres sslmode=disable")
+
 	if err == nil {
 		DB = db
 		//db.LogMode(true)
